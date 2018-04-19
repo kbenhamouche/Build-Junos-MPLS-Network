@@ -1,0 +1,6 @@
+---
+
+- name: Building MP-BGP configuration
+  template: >
+    src=main.conf.j2
+    dest={{ build_dir }}/mpbgp.conf.part

@@ -1,0 +1,7 @@
+---
+
+- name: Generate Loopback addresses for each nodes
+  template: >
+    src=main.conf.j2
+    dest=group_vars/all/generated_lo_ips.yaml
+  run_once: true

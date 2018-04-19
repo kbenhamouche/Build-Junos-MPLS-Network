@@ -1,0 +1,5 @@
+
+generate_lo:
+  nbr_nodes: "{{ groups['juniper'] | length }}"
+  network_size: 32
+  network_pool: 100.0.0.0/24

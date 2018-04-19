@@ -1,0 +1,35 @@
+---
+- name: Create backup config directories
+  hosts: localhost
+  gather_facts: no
+  tasks:
+
+   - name: Create backup config directory
+     file:
+       path: "{{playbook_dir}}/backup-config"
+       state: directory
+
+   - name: Create backup config subdirectories
+     file:
+       path: "{{playbook_dir}}/backup-config/{{ item }}"
+       state: directory
+     with_items:
+       - text
+
+- name: Collect config from devices
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+
+  - name: Collect config in text format from devices
+    junos_facts:
+      gather_subset: config
+      config_format: text
+      provider: "{{ credentials }}"
+    register: "result_text"
+
+  - name: Copy collected config in backup-config/text directory
+    copy:
+      content: "{{ result_text.ansible_facts.ansible_net_config }}"
+      dest: "{{ playbook_dir }}/backup-config/text/{{ inventory_hostname }}-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.conf"

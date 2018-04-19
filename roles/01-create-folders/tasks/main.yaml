@@ -1,0 +1,29 @@
+---
+
+# 1- Create a dedicated host_vars for each node
+
+# Remove existing host_vars directories for each host
+- name: Remove existing Host vars directories
+  file: path=host_vars/{{ inventory_hostname }} state=absent
+
+# Creating host_vars directories for each host
+- name: Create a Host vars directory for each node
+  file: path=host_vars/{{ inventory_hostname }} state=directory
+
+
+# 2- Create a temporary directory for each node in order to merge all generated configurations
+
+# Creating build directories for each host
+- name: Create a temporary directory for each node
+  file: path={{ build_dir }} state=directory
+
+
+#3- Create the configuration directory that contains the final configuration to push on each node
+
+- name: Remove the old configuration directory
+  file: path={{ junos_conf_dir }} state=absent
+  run_once: true
+
+- name: Create the configuration directory
+  file: path={{ junos_conf_dir }} state=directory
+  run_once: true

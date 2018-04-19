@@ -1,0 +1,6 @@
+---
+
+- name: Building LDP configuration
+  template: >
+    src=main.conf.j2
+    dest={{ build_dir }}/ldp.conf.part

@@ -1,0 +1,67 @@
+{% for host in groups['bgp'] %}
+{% if inventory_hostname == host %}
+routing-options {
+    autonomous-system {{ asn }};
+}
+protocols {
+    bgp {
+        log-updown;
+        graceful-restart;
+        group mpls {
+            type internal;
+            local-address "{{ mpls.loopback }}";
+{% for host in groups['RR_Routers'] %}
+{% if inventory_hostname == host %}
+            cluster {{ mpls.loopback }};
+{% endif %}
+{% endfor %}
+            local-as {{ mpls.local.asn }};
+            bfd-liveness-detection {
+                minimum-interval {{ mpls.bfd.min_interval }};
+                multiplier {{ mpls.bfd.multiplier }};
+                session-mode {{ mpls.bfd.mode }};
+            }
+            family inet {
+                unicast;
+            }
+            family inet6 {
+                unicast;
+            }
+            family inet-vpn {
+                any;
+            }
+            family inet6-vpn {
+                any;
+            }
+            family evpn {
+                signaling;
+            }
+            family inet-mvpn {
+                signaling;
+            }
+            family inet6-mvpn {
+                signaling;
+            }
+{% for host_RR in groups['RR_Routers'] %}
+{% if inventory_hostname == host_RR %}
+{% for host_PE in groups['PE_Routers'] %}
+            neighbor {{ hostvars[host_PE].mpls.loopback }} {
+                peer-as {{ hostvars[host_PE].asn }};
+            }
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% for host_PE in groups['PE_Routers'] %}
+{% if inventory_hostname == host_PE %}
+{% for host_RR in groups['RR_Routers'] %}
+            neighbor {{ hostvars[host_RR].mpls.loopback }} {
+                peer-as {{ hostvars[host_RR].asn }};
+            }
+{% endfor %}
+{% endif %}
+{% endfor %}
+        }
+    }
+}
+{% endif %}
+{% endfor %}

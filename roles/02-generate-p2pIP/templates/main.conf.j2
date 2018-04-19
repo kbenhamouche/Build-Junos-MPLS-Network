@@ -1,0 +1,12 @@
+
+netmask: {{ generate_p2p.network_size }}
+p2p:
+{% set nbr_links = (generate_p2p.nbr_nodes | int * (generate_p2p.nbr_nodes | int - 1))/2 %}
+{% for i in range(0, nbr_links | int ) %}
+{% set network = generate_p2p.network_pool | ipsubnet(generate_p2p.network_size, i) %}
+{% if generate_p2p.network_size == 31 %}
+ {{ i + 1 }}: { 1: {{ network | ipaddr('network') }}, 2: {{ network | ipaddr(1) | ipaddr('address') }} }
+{% else %}
+ {{ i + 1 }}: { 1: {{ network | ipaddr(1) | ipaddr('address') }}, 2: {{ network | ipaddr(2) | ipaddr('address') }} }
+{% endif %}
+{% endfor %}

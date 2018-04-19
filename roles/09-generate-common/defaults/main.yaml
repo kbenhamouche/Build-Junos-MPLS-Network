@@ -1,0 +1,21 @@
+
+global:
+    root_hash: $1$BZNqFAtN$xF1mJPVtnBiJLS6VjTbYQ/
+    login_message: This is the property of Test Corp. Do not login without express permission.
+    time_zone: America/Toronto
+    domain_name: test.com
+    # Google DNS
+    name_servers:
+    - 8.8.8.8
+    - 8.8.4.4
+    # Google NTP
+    ntp_servers:
+    - 216.239.35.0
+    snmp:
+        location: "Site 1"
+        contact: John Doe
+        polling:
+        - community: public
+    routes:
+      static:
+        0.0.0.0/0: 10.9.99.1

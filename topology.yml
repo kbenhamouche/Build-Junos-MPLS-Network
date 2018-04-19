@@ -1,0 +1,64 @@
+---
+topo:
+# "type" is required to make difference btw mpls links and acces links - needed in 03-generate-vars role
+# "link" is required to assign IP P2P ipsubnet
+# "linked" is required to assign the right IP@
+    RR1:
+        port1: { name: ge-0/0/0,    peer: P3,     pport: port1,  type: mpls, link: 1, linkend: 2 }
+
+    RR2:
+        port1: { name: ge-0/0/0,    peer: P1,     pport: port1,  type: mpls,  link: 2, linkend: 2 }
+
+    P1:
+        port1: { name: ge-0/0/0,    peer: RR2,    pport: port1,  type: mpls,  link: 2, linkend: 1 }
+        port2: { name: ge-0/0/1,    peer: PE1,    pport: port2,  type: mpls,  link: 6, linkend: 1 }
+        port3: { name: ge-0/0/2,    peer: P2,     pport: port2,  type: mpls,  link: 3, linkend: 1 }
+        port4: { name: ge-0/0/3,    peer: P3,     pport: port2,  type: mpls,  link: 4, linkend: 1 }
+        port5: { name: ge-0/0/4,    peer: PE5,    pport: port2,  type: mpls,  link: 14, linkend: 1 }
+        port6: { name: ge-0/0/5,    peer: PE6,    pport: port2,  type: mpls,  link: 15, linkend: 1 }
+        port7: { name: ge-0/0/6,    peer: access, pport: unknown }
+
+    P2:
+        port1: { name: ge-0/0/0,    peer: PE4,    pport: port1,  type: mpls,  link: 10, linkend: 1 }
+        port2: { name: ge-0/0/1,    peer: P1,     pport: port3,  type: mpls,  link: 3, linkend: 2 }
+        port3: { name: ge-0/0/2,    peer: PE1,    pport: port3,  type: mpls,  link: 7, linkend: 1 }
+        port4: { name: ge-0/0/3,    peer: P3,     pport: port3,  type: mpls,  link: 5, linkend: 1 }
+        port5: { name: ge-0/0/4,    peer: PE3,    pport: port1,  type: mpls,  link: 9, linkend: 1 }
+
+    P3:
+        port1: { name: ge-0/0/0,    peer: RR1,    pport: port1,  type: mpls,  link: 1, linkend: 1 }
+        port2: { name: ge-0/0/1,    peer: P1,     pport: port4,  type: mpls,  link: 4, linkend: 2 }
+        port3: { name: ge-0/0/2,    peer: P2,     pport: port4,  type: mpls,  link: 5, linkend: 1 }
+        port4: { name: ge-0/0/3,    peer: PE4,    pport: port3,  type: mpls,  link: 11, linkend: 1 }
+        port5: { name: ge-0/0/4,    peer: PE5,    pport: port3,  type: mpls,  link: 16, linkend: 1 }
+        port6: { name: ge-0/0/5,    peer: PE6,    pport: port3,  type: mpls,  link: 17, linkend: 1 }
+
+    PE1:
+        port1: { name: ge-0/0/0,    peer: PE2,    pport: port1,  type: mpls,  link: 8, linkend: 1 }
+        port2: { name: ge-0/0/1,    peer: P1,     pport: port2,  type: mpls,  link: 6, linkend: 2 }
+        port3: { name: ge-0/0/2,    peer: P2,     pport: port3,  type: mpls,  link: 7, linkend: 2 }
+
+    PE2:
+        port1: { name: ge-0/0/0,    peer: PE1,    pport: port1,  type: mpls,  link: 8, linkend: 2 }
+        port2: { name: ge-0/0/1,    peer: access, pport: unknown }
+        port3: { name: ge-0/0/3,    peer: PE3,    pport: port3,  type: mpls,  link: 13, linkend: 1 }
+
+    PE3:
+        port1: { name: ge-0/0/0,    peer: P2,     pport: port5,  type: mpls,  link: 9, linkend: 2 }
+        port2: { name: ge-0/0/1,    peer: access, pport: unknown }
+        port3: { name: ge-0/0/2,    peer: PE2,    pport: port1,  type: mpls,  link: 13, linkend: 2 }
+
+    PE4:
+        port1: { name: ge-0/0/0,    peer: access, pport: unknown }
+        port2: { name: ge-0/0/2,    peer: P2,     pport: port1,  type: mpls,  link: 10, linkend: 2 }
+        port3: { name: ge-0/0/3,    peer: P3,     pport: port4,  type: mpls,  link: 11, linkend: 2 }
+
+    PE5:
+        port1: { name: ge-0/0/0,    peer: access, pport: unknown }
+        port2: { name: ge-0/0/1,    peer: P1,     pport: port5,  type: mpls,  link: 14, linkend: 2 }
+        port3: { name: ge-0/0/3,    peer: P3,     pport: port5,  type: mpls,  link: 16, linkend: 2 }
+
+    PE6:
+        port1: { name: ge-0/0/0,    peer: access, pport: unknown }
+        port2: { name: ge-0/0/1,    peer: P1,     pport: port6,  type: mpls,  link: 15, linkend: 2 }
+        port3: { name: ge-0/0/3,    peer: P3,     pport: port6,  type: mpls,  link: 17, linkend: 2 }

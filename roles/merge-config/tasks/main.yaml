@@ -1,0 +1,9 @@
+---
+
+# 1- Merge all temporary generated configurations for each node
+- name: Merge all generated configurations and Copy the final configuration in the configuration directory
+  assemble: src={{ build_dir }} dest={{ junos_conf }}
+
+# 2- Remove the temporary directory for each node
+- name: Remove all temporary directories
+  file: path={{ build_dir }} state=absent

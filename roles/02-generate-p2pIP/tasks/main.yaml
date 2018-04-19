@@ -1,0 +1,7 @@
+---
+
+- name: Generate IP addresses for point to point links
+  template: >
+    src=main.conf.j2
+    dest=group_vars/all/generated_p2p_ips.yaml
+  run_once: true

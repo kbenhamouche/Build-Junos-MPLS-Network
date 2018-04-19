@@ -1,0 +1,35 @@
+[all:children]
+juniper
+bgp
+
+[juniper:children]
+P_Routers
+RR_Routers
+PE_Routers
+
+[bgp:children]
+RR_Routers
+PE_Routers
+
+[RR_Routers]
+RR1 mgmt_ip=10.9.99.211 id=1
+RR2 mgmt_ip=10.9.99.212 id=2
+
+[P_Routers]
+P1 mgmt_ip=10.9.99.213 id=3
+P2 mgmt_ip=10.9.99.214 id=4
+P3 mgmt_ip=10.9.99.215 id=5
+
+[PE_Routers]
+PE1 mgmt_ip=10.9.99.216 id=6
+PE2 mgmt_ip=10.9.99.217 id=7
+PE3 mgmt_ip=10.9.99.218 id=8
+PE4 mgmt_ip=10.9.99.219 id=9
+PE5 mgmt_ip=10.9.99.220 id=10
+PE6 mgmt_ip=10.9.99.221 id=11
+
+[all:vars]
+netconf_port=830
+topology_file=topology.yml
+asn=65100
+mgmt_port=em0

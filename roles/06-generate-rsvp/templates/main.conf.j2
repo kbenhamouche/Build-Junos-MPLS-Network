@@ -1,0 +1,13 @@
+protocols {
+    rsvp {
+{% for neighbor in mpls.neighbors %}
+            interface {{ neighbor.interface }};
+{% endfor %}
+            interface lo0;
+    }
+    mpls {
+{% for neighbor in mpls.neighbors %}
+            label-switched-path {{ inventory_hostname }}-2-{{ neighbor.name }} to {{ neighbor.loopback }};
+{% endfor %}
+    }
+}

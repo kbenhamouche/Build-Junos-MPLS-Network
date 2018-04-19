@@ -1,0 +1,24 @@
+
+mpls:
+    bfd:
+      min_interval: 350
+      multiplier: 3
+      mode: automatic
+    local:
+        asn: {{ asn }}
+    loopback: {{ lo[id] }}
+    neighbors:
+{% for portname, portlist in topo[inventory_hostname].iteritems() %}
+{% if portlist.type is defined %}
+      - interface: {{ portlist.name }}
+        name: {{ portlist.peer }}
+        asn: {{ hostvars[portlist.peer].asn }}
+{% if portlist.linkend == 1 %}
+        peer_ip: {{ p2p[portlist.link][2]}}
+{% else %}
+        peer_ip: {{ p2p[portlist.link][1]}}
+{% endif %}
+        local_ip: {{ p2p[portlist.link][portlist.linkend]}}
+        loopback: {{ lo[hostvars[portlist.peer].id] }}
+{% endif %}
+{% endfor %}

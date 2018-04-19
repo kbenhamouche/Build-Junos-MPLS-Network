@@ -1,0 +1,11 @@
+---
+
+- name: Generate Variables
+  hosts: all
+  connection: local
+  gather_facts: no
+  pre_tasks:
+      # topology_file vars is defined in hosts File
+    - include_vars: "{{ topology_file }}"
+  roles:
+   - 04-generate-vars

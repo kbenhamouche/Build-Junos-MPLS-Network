@@ -1,0 +1,8 @@
+protocols {
+    ldp {
+{% for neighbor in mpls.neighbors %}
+            interface {{ neighbor.interface }};
+{% endfor %}
+            interface lo0;
+    }
+}

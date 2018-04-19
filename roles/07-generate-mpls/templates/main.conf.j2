@@ -1,0 +1,18 @@
+interfaces {
+{% for neighbor in mpls.neighbors %}
+    {{ neighbor.interface }} {
+        unit 0 {
+            family mpls;
+        }
+    }
+{% endfor %}
+}
+
+protocols {
+    mpls {
+{% for neighbor in mpls.neighbors %}
+            interface {{ neighbor.interface }};
+{% endfor %}
+            interface lo0;
+    }
+}

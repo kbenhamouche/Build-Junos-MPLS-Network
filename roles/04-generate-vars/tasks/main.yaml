@@ -1,0 +1,6 @@
+---
+
+- name: Generate Variables
+  template: >
+    src=main.conf.j2
+    dest=host_vars/{{ inventory_hostname }}/generated-vars.yaml

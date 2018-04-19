@@ -1,0 +1,10 @@
+---
+
+- name: Generate IP Addressing
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+   - 01-create-folders
+   - 02-generate-p2pIP
+   - 03-generate-loopIP

@@ -1,0 +1,57 @@
+interfaces {
+{% for neighbor in mpls.neighbors %}
+    {{ neighbor.interface }} {
+        mtu 2000
+        unit 0 {
+            description "to {{ neighbor.name }}";
+            family inet {
+                address {{ neighbor.local_ip }}/{{ netmask }};
+            }
+            family iso;
+        }
+    }
+{% endfor %}
+    lo0 {
+        unit 0 {
+            family inet {
+                address {{ mpls.loopback }}/32;
+            }
+            family iso {
+{% if id < 10 %}
+                address {{ "49.0004.1000.0000.000" ~ id ~ ".00" }};
+{% else %}
+                address {{ "49.0004.1000.0000.00" ~ id ~ ".00" }};
+{% endif %}
+            }
+        }
+    }
+}
+
+protocols {
+    isis {
+            traffic-engineering family inet shortcuts;
+            level 1 disable;
+{% for neighbor in mpls.neighbors %}
+            interface {{ neighbor.interface }} point-to-point level 1 disable;
+            interface {{ neighbor.interface }} level 2 metric 10;
+            interface {{ neighbor.interface }} node-link-protection;
+            interface {{ neighbor.interface }} bfd-liveness-detection minimum-interval {{ mpls.bfd.min_interval }};
+{% endfor %}
+            interface lo0 passive;
+    }
+}
+
+routing-options {
+    router-id {{ mpls.loopback }};
+    forwarding-table {
+        export PFE-LB;
+    }
+}
+
+policy-options {
+    policy-statement PFE-LB {
+        then {
+            load-balance per-packet;
+        }
+    }
+}

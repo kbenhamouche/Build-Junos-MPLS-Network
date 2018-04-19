@@ -1,0 +1,51 @@
+interfaces {
+{% for neighbor in mpls.neighbors %}
+    {{ neighbor.interface }} {
+        mtu 2000
+        unit 0 {
+            description "to {{ neighbor.name }}";
+            family inet {
+                address {{ neighbor.local_ip }}/{{ netmask }};
+            }
+        }
+    }
+{% endfor %}
+    lo0 {
+        unit 0 {
+            family inet {
+                address {{ mpls.loopback }}/32;
+            }
+        }
+    }
+}
+
+protocols {
+    ospf {
+      traffic-engineering;
+      area 0.0.0.0 {
+{% for neighbor in mpls.neighbors %}
+            interface {{ neighbor.interface }} interface-type p2p;
+            interface {{ neighbor.interface }} node-link-protection;
+            interface {{ neighbor.interface }} metric 10;
+            interface {{ neighbor.interface }} bfd-liveness-detection minimum-interval {{ mpls.bfd.min_interval }};
+            interface {{ neighbor.interface }} bfd-liveness-detection full-neighbors-only;
+{% endfor %}
+            interface lo0 passive;
+      }
+    }
+}
+
+routing-options {
+    router-id {{ mpls.loopback }};
+    forwarding-table {
+        export PFE-LB;
+    }
+}
+
+policy-options {
+    policy-statement PFE-LB {
+        then {
+            load-balance per-packet;
+        }
+    }
+}

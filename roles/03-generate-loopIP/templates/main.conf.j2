@@ -1,0 +1,6 @@
+
+lo:
+{% for i in range(0, generate_lo.nbr_nodes | int) %}
+{% set network = generate_lo.network_pool | ipsubnet(generate_lo.network_size, i + 1) %}
+ {{ i + 1 }}: {{ network | ipaddr(1) | ipaddr('address') }}
+{% endfor %}

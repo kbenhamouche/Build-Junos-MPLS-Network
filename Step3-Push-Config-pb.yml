@@ -1,0 +1,41 @@
+---
+
+- name: Generate Variables
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  vars:
+    # required to put part configuration
+    build_dir: "/tmp/{{ inventory_hostname }}"
+
+  pre_tasks:
+      # topology_file vars is defined in hosts File
+    - include_vars: "{{ topology_file }}"
+      # load generated p2p@
+    - include_vars: "{{playbook_dir}}/group_vars/all/generated_p2p_ips.yaml"
+    # load generated loopback@
+    - include_vars: "{{playbook_dir}}/group_vars/all/generated_lo_ips.yaml"
+    # load generated variables
+    - include_vars: "{{playbook_dir}}/host_vars/{{ inventory_hostname }}/generated-vars.yaml"
+
+  roles:
+   - 05-generate-isis
+#   - 05-generate-ospf
+#   - 06-generate-ldp
+   - 06-generate-rsvp
+   - 07-generate-mpls
+   - 08-generate-mpbgp-with-RR
+#   - 08-generate-mpbgp-without-RR
+   - 09-generate-common
+   - merge-config
+
+  tasks:
+
+# Please enable SSH on MX before to execute the following tasks
+
+  - name: Pushing config ... please wait
+    junos_config:
+     provider: "{{ credentials }}"
+     src: "{{ junos_conf }}"
+     update: override
