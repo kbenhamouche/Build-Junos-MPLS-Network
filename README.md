@@ -1,6 +1,6 @@
 # Build-Junos-MPLS-Network
 
-The Ansible playbooks provide a easy way to setup a MPLS Network on MX routers.
+The Ansible playbooks provide a easy way to setup a MPLS Network on Juniper MX routers.
 
 REQUIREMENTS
 - Netconf/ssh has to be enabled on all nodes
