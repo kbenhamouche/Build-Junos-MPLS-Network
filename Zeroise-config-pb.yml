@@ -6,7 +6,7 @@
   gather_facts: no
 
   roles:
-   - zeroize-config
+   - zeroise-config
 
   tasks:
 
@@ -15,5 +15,5 @@
   - name: Please wait...
     junos_config:
      provider: "{{ credentials }}"
-     src: group_vars/all//zeroize.conf
+     src: host_vars/{{ inventory_hostname }}/zeroise.conf
      update: override

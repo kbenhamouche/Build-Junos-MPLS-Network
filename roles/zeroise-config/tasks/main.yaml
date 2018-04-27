@@ -2,4 +2,4 @@
 - name: Zeroize the configuration
   template: >
     src=main.conf.j2
-    dest=group_vars/all//zeroize.conf
+    dest=host_vars/{{ inventory_hostname }}/zeroise.conf
