@@ -1,4 +1,8 @@
 ---
+# Creating host_vars directories for each host
+- name: Create a Host vars directory for each node
+  file: path=host_vars/{{ inventory_hostname }} state=directory
+
 - name: Zeroize the configuration
   template: >
     src=main.conf.j2
