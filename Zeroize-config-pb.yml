@@ -1,0 +1,19 @@
+---
+
+- name: Generate Variables
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  roles:
+   - zeroize-config
+
+  tasks:
+
+# Please enable SSH on MX before to execute the following tasks
+
+  - name: Please wait...
+    junos_config:
+     provider: "{{ credentials }}"
+     src: group_vars/all//zeroize.conf
+     update: override

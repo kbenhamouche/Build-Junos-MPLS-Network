@@ -1,0 +1,6 @@
+
+global:
+    root_hash: $1$BZNqFAtN$xF1mJPVtnBiJLS6VjTbYQ/
+    routes:
+      static:
+        0.0.0.0/0: 10.9.99.1
