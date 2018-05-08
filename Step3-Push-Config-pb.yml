@@ -20,10 +20,10 @@
     - include_vars: "{{playbook_dir}}/host_vars/{{ inventory_hostname }}/generated-vars.yaml"
 
   roles:
-   - 05-generate-isis
-#   - 05-generate-ospf
-#   - 06-generate-ldp
-   - 06-generate-rsvp
+#   - 05-generate-isis
+   - 05-generate-ospf
+   - 06-generate-ldp
+#   - 06-generate-rsvp
    - 07-generate-mpls
    - 08-generate-mpbgp-with-RR
 #   - 08-generate-mpbgp-without-RR
