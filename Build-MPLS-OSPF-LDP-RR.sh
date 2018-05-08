@@ -13,4 +13,3 @@ sleep 3
 ansible-playbook Step3-Push-Config-pb.yml
 sleep 3
 printf "The MPLS network is ready.\n"
-sleep 3
